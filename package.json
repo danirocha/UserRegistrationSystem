@@ -1,0 +1,8 @@
+{
+  "name": "User Registration System",
+  "version": "0.0.1",
+  "description": "A basic REST API for a user registration system using Node.js",
+  "main": "index.js",
+  "author": "Daniela Rocha (github.com/danirocha)",
+  "license": "MIT"
+}
