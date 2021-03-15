@@ -5,7 +5,13 @@
   "main": "index.js",
   "author": "Daniela Rocha (github.com/danirocha)",
   "license": "MIT",
+  "scripts": {
+    "dev": "nodemon src/server.js"
+  },
   "dependencies": {
     "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
   }
 }
