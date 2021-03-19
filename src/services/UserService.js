@@ -1,14 +1,16 @@
+import repository from '../repositories/UserRepository';
+
 class UserService {
     constructor () {
-        // -
+        this.repository = repository;
     }
 
     getUserByCPF(cpf) {
-        return cpf == "15312561711";
+        return this.repository.get({ cpf });
     }
 
     registerUser(newUser) {
-        return;
+        this.repository.set(newUser);
     }
 }
 

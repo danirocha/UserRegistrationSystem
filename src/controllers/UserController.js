@@ -10,11 +10,13 @@ class UserController {
       
         const user = this.service.getUserByCPF(cpf);
       
-        if (user) res.json({ message: 'This user already exists' });
+        if (user) {
+            return res.json({ message: 'This user already exists' });
+        }
       
         this.service.registerUser({ name, email, cpf, password });
         
-        res.json({ message: 'User successfully registered' });
+        return res.json({ message: 'User successfully registered' });
       }
 }
 
