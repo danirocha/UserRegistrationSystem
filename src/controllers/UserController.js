@@ -18,6 +18,18 @@ class UserController {
         
         return res.json({ message: 'User successfully registered' });
       }
+
+      get (req, res) {
+        const userId = +req.params.userId;
+      
+        const user = this.service.getUserByID(userId);
+      
+        if (!user) {
+            return res.json({ message: "User not found" });
+        }
+        
+        return res.json({ user });
+      }
 }
 
 export default new UserController();

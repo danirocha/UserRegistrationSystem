@@ -9,6 +9,10 @@ class UserService {
         return this.repository.get({ cpf });
     }
 
+    getUserByID(id) {
+        return this.repository.get({ id });
+    }
+
     registerUser(newUser) {
         this.repository.set(newUser);
     }
