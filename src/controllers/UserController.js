@@ -5,7 +5,7 @@ class UserController {
         this.service = UserService;
     }
 
-    post (req, res) {
+    store (req, res) {
         const { name, email, cpf, password } = req.body;
       
         const user = this.service.getUserByCPF(cpf);
@@ -19,7 +19,7 @@ class UserController {
         return res.json({ message: 'User successfully registered' });
       }
 
-      get (req, res) {
+      list (req, res) {
         const userId = +req.params.userId;
       
         const user = this.service.getUserByID(userId);
