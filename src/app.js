@@ -1,5 +1,8 @@
 import express from 'express';
 import routes from './routes';
+import utils from './utils';
+
+globalThis.utils = utils;
 
 class App {
 constructor() {
