@@ -12,8 +12,12 @@ class UserRepository {
         return database.select (this.root, property, value);
     }
 
-    set(user) {
-        database.insert(this.root, user);
+    set(data) {
+        database.insert(this.root, data);
+    }
+
+    update(userId, data) {
+        database.update(this.root, userId, data);
     }
 }
 

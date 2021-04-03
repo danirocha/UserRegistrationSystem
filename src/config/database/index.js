@@ -13,15 +13,15 @@ class Database {
     }
 
     select(rootElem, property, value) {
-        let elemID;
+        let index;
 
         try {    
-            elemID = this.db.getIndex(`/${rootElem}`, value, property);
+            index = this.db.getIndex(`/${rootElem}`, value, property);
         } catch (err) {
             return false;
         }
         
-        return (elemID >= 0) ? this.db.getData(`/${rootElem}[${elemID}]`) : false;
+        return (index >= 0) ? this.db.getData(`/${rootElem}[${index}]`) : false;
     }
 
     insert(rootElem, insertObj) {
@@ -33,10 +33,17 @@ class Database {
         }
 
         this.db.push(`/${rootElem}[]`, insertObj, true);
+
+        return this.db.getData(`/${rootElem}[-1]`);
     }
 
-    update() {
-        // -
+    update(rootElem, elemId, updateObj) {
+        const index = this.db.getIndex(`/${rootElem}`, elemId, "id");
+        const currentObj = this.db.getData(`/${rootElem}[${index}]`);
+
+        this.db.push(`/${rootElem}[${index}]`, { ...currentObj, ...utils.sanitizeObj(updateObj) }, true);
+
+        return this.db.getData(`/${rootElem}[${index}]`);
     }
 
     delete() {

@@ -13,8 +13,12 @@ class UserService {
         return this.repository.get({ id });
     }
 
-    registerUser(newUser) {
-        this.repository.set(newUser);
+    registerUser(data) {
+        this.repository.set(data);
+    }
+
+    updateUser(userId, data) {
+        this.repository.update(userId, data);
     }
 }
 
