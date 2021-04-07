@@ -5,20 +5,16 @@ class UserService {
         this.repository = repository;
     }
 
-    getUserByCPF(cpf) {
-        return this.repository.get({ cpf });
+    list(options) {
+        return this.repository.list(options);
     }
 
-    getUserByID(id) {
-        return this.repository.get({ id });
+    store(data) {
+        this.repository.store(data);
     }
 
-    registerUser(data) {
-        this.repository.set(data);
-    }
-
-    updateUser(userId, data) {
-        this.repository.update(userId, data);
+    update(id, data) {
+        this.repository.update(id, data);
     }
 }
 

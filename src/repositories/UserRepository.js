@@ -5,14 +5,14 @@ class UserRepository {
         this.root = 'users';
     }
 
-    get(options) {
+    list(options) {
         const property = Object.keys(options)[0];
         const value = options[property];
 
-        return database.select (this.root, property, value);
+        return database.select(this.root, property, value);
     }
 
-    set(data) {
+    store(data) {
         database.insert(this.root, data);
     }
 
