@@ -24,6 +24,10 @@ class Database {
         return (index >= 0) ? this.db.getData(`/${rootElem}[${index}]`) : false;
     }
 
+    selectLatest(rootElem) {
+        return this.db.getData(`/${rootElem}[-1]`);
+    }
+
     insert(rootElem, insertObj) {
         try {
             let elemsCount = this.db.count(rootElem);
@@ -44,10 +48,6 @@ class Database {
         this.db.push(`/${rootElem}[${index}]`, { ...currentObj, ...utils.sanitizeObj(updateObj) }, true);
 
         return this.db.getData(`/${rootElem}[${index}]`);
-    }
-
-    delete() {
-        // -
     }
 }
 

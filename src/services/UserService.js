@@ -11,10 +11,14 @@ class UserService {
 
     store(data) {
         this.repository.store(data);
+
+        return this.repository.list({ latest: true });
     }
 
     update(id, data) {
         this.repository.update(id, data);
+
+        return this.repository.list({ id });
     }
 }
 

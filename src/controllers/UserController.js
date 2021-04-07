@@ -14,9 +14,9 @@ class UserController {
             return res.json({ message: 'This user already exists' });
         }
       
-        this.service.store({ name, email, cpf, password });
+        const newUser = this.service.store({ name, email, cpf, password });
         
-        return res.json({ message: 'User successfully registered' });
+        return res.json({ message: 'User successfully registered', data: newUser });
       }
 
     list (req, res) {
@@ -48,9 +48,9 @@ class UserController {
           }
       }
     
-      this.service.update(userId, { name, email, cpf, password });
+      const updatedUser = this.service.update(userId, { name, email, cpf, password });
       
-      return res.json({ message: 'User successfully updated' });
+      return res.json({ message: 'User successfully updated', data: updatedUser });
     }
 }
 

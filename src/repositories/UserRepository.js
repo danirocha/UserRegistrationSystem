@@ -6,6 +6,10 @@ class UserRepository {
     }
 
     list(options) {
+        if (options.latest) {
+            return database.selectLatest(this.root);
+        }
+
         const property = Object.keys(options)[0];
         const value = options[property];
 
