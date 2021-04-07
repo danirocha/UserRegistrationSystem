@@ -20,8 +20,12 @@ class UserRepository {
         database.insert(this.root, data);
     }
 
-    update(userId, data) {
-        database.update(this.root, userId, data);
+    update(id, data) {
+        database.update(this.root, id, data);
+    }
+
+    delete(id) {
+        return database.delete(this.root, id)
     }
 }
 

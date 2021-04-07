@@ -20,6 +20,10 @@ class UserService {
 
         return this.repository.list({ id });
     }
+
+    delete(id) {
+        return this.repository.delete(id);
+    }
 }
 
 export default new UserService();

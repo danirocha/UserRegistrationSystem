@@ -52,6 +52,19 @@ class UserController {
       
       return res.json({ message: 'User successfully updated', data: updatedUser });
     }
+
+    delete (req, res) {
+        const userId = +req.params.userId;
+        const user = this.service.list({ id: userId });
+    
+        if (!user) {
+            return res.json({ message: "User not found" });
+        }
+
+        const deletedUser = this.service.delete(userId);
+      
+        return res.json({ message: 'User successfully deleted', data: deletedUser });
+    }
 }
 
 export default new UserController();

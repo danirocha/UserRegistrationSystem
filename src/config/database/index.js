@@ -49,6 +49,15 @@ class Database {
 
         return this.db.getData(`/${rootElem}[${index}]`);
     }
+
+    delete(rootElem, elemId) {
+        const index = this.db.getIndex(`/${rootElem}`, elemId, "id");
+        const deletedElem = this.db.getData(`/${rootElem}[${index}]`);
+        
+        this.db.delete(`/${rootElem}[${index}]`);
+
+        return deletedElem;
+    }
 }
 
 export default new Database();
