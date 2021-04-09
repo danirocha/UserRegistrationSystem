@@ -14,13 +14,13 @@ class UserController {
             return res.json({ message: 'This user already exists' });
         }
       
-        const newUser = this.service.store({ name, email, cpf, password });
+        const newUser = this.service.store({ name, email, cpf, password }); // TODO: use bcrypt for the password
         
         return res.json({ message: 'User successfully registered', data: newUser });
       }
 
     list (req, res) {
-      const userId = +req.params.userId;
+      const userId = req.user.id;
     
       const user = this.service.list({ id: userId });
     
@@ -33,7 +33,7 @@ class UserController {
 
     update (req, res) {
       const { name, email, cpf, password } = req.body;
-      const userId = +req.params.userId;      
+      const userId = req.user.id;      
       const user = this.service.list({ id: userId });
     
       if (!user) {
@@ -54,7 +54,7 @@ class UserController {
     }
 
     delete (req, res) {
-        const userId = +req.params.userId;
+        const userId = req.user.id;
         const user = this.service.list({ id: userId });
     
         if (!user) {
