@@ -1,6 +1,7 @@
 import express from 'express';
 import routes from './routes';
 import utils from './utils';
+import logMiddleware from './middlewares/log';
 
 globalThis.utils = utils;
 
@@ -14,6 +15,7 @@ constructor() {
 
 middlewares () {
     this.server.use(express.json());
+    this.server.use(logMiddleware);
 }
 
 routes() {
