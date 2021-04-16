@@ -10,7 +10,6 @@ These instructions will get you a copy of the project up and running on your loc
 
 - Install [Node](https://nodejs.org/en/)
 - Install [Yarn](https://yarnpkg.com/)
-- Install [Docker](https://www.docker.com/products/docker-desktop)
 
 ### Installing
 
@@ -19,6 +18,7 @@ These instructions will get you a copy of the project up and running on your loc
 ## Built With
 
 - [Node](https://nodejs.org/en/) - A JavaScript runtime built on Chrome's V8 JavaScript engine
+- [Jest](https://jestjs.io/) - JavaScript Testing Framework
 
 ## Authors
 

@@ -52,7 +52,6 @@ export default (req, res, next) => {
   };
 
   req.on("error", _getError);
-
   res.on("close", _logClose);
   res.on("error", _logError);
   res.on("finish", _logFinish);
