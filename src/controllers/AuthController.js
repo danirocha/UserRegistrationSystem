@@ -12,13 +12,13 @@ class AuthController {
         const user = this.userService.list({ email });
       
         if (!user || (user && password != user.password)) { // TODO: use bcrypt for the password
-            return res.json({ message: 'invalid login data' });
+            return res.sendResponse({ status: 400, data: { message: 'invalid login data' }});
         }
 
         const { id, name } = user;
         const token = jwt.sign({ id }, authConfig.secret, authConfig.options);
         
-        return res.json({ user: { name, email }, token });
+        return res.sendResponse({ status: 200, data: { user: { name, email }, token }});
       }
 }
 
