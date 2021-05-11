@@ -44,7 +44,7 @@ class UserController {
           const existingCPF = this.service.list({ cpf });
       
           if (existingCPF && existingCPF.id != userId) {
-              return sendRequest({ status: 400, data: { message: 'This CPF is already in use' } });
+              return res.sendRequest({ status: 400, data: { message: 'This CPF is already in use' } });
           }
       }
     
@@ -58,12 +58,12 @@ class UserController {
         const user = this.service.list({ id: userId });
     
         if (!user) {
-            return res.json({ message: "User not found" });
+            return res.sendRequest({status: 422, data: { message: "User not found" } });
         }
 
         const deletedUser = this.service.delete(userId);
       
-        return res.json({ message: 'User successfully deleted', data: deletedUser });
+        return res.sendRequest({status: 200, data: { message: 'User successfully deleted', data: deletedUser } });
     }
 }
 
