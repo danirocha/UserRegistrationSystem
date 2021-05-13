@@ -14,7 +14,7 @@ test('User with valid data should register normally', async () => {
         body: user
     };
     const res = {
-        sendRequest: (options) => { return options }
+        sendResponse: (options) => { return options }
     };
 
     UserService.list.mockReturnValue(null);
@@ -47,7 +47,7 @@ test("User with an already registered cpf can't register", async () => {
         }
     };
     const res = {
-        sendRequest: (options) => { return options }
+        sendResponse: (options) => { return options }
     };
 
     UserService.list.mockReturnValue(cpfUser);
@@ -76,7 +76,7 @@ test('Existing user should be returned', async () => {
         }
     };
     const res = {
-        sendRequest: (options) => { return options }
+        sendResponse: (options) => { return options }
     };
 
     UserService.list.mockReturnValue(user);
@@ -114,7 +114,7 @@ test("User can't update its cpf to an already registered one", async () => {
         }
     };
     const res = {
-        sendRequest: (options) => { return options }
+        sendResponse: (options) => { return options }
     };
 
     UserService.list
@@ -144,7 +144,7 @@ test("User can't delete nonexistent registration", async () => {
         }
     };
     const res = {
-        sendRequest: (options) => { return options }
+        sendResponse: (options) => { return options }
     };
 
     UserService.list.mockReturnValue(null);
@@ -172,7 +172,7 @@ test('User can delete its own data', async () => {
         }
     };
     const res = {
-        sendRequest: (options) => { return options }
+        sendResponse: (options) => { return options }
     };
 
     UserService.list.mockReturnValue(user);
