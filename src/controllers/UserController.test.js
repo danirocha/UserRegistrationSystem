@@ -7,7 +7,7 @@ test('User with valid data should register normally', async () => {
     const user = {
         name: 'Gilberto gil',
         email: 'gilberto@gil.com',
-        cpf: '5874911023',
+        cpf: '58749110232',
         password: '123456'
     };
     const req = {
@@ -35,14 +35,14 @@ test("User with an already registered cpf can't register", async () => {
     const cpfUser = {
         id: 1,
         email: 'caetano@velrojo.com',
-        cpf: '145833066',
+        cpf: '14583306611',
         password: '123456'
     };
     const req = {
         body: {
             name: 'Gilberto gil',
             email: 'gilberto@gil.com',
-            cpf: '145833066',
+            cpf: '14583306611',
             password: '123456'
         }
     };
@@ -67,7 +67,7 @@ test('Existing user should be returned', async () => {
     const user = {
         id: 3,
         email: 'gilberto@gil.com',
-        cpf: '145833066',
+        cpf: '14583306611',
         password: '123456'
     };
     const req = {
@@ -102,7 +102,7 @@ test("User can't update its cpf to an already registered one", async () => {
     const cpfUser = {
         id: 1,
         email: 'caetano@velrojo.com',
-        cpf: '145833066',
+        cpf: '14583306611',
         password: '123456'
     };
     const req = {
