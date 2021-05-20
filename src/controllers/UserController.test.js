@@ -1,7 +1,9 @@
 import UserController from './UserController';
 import UserService from '../services/UserService';
+import Mailer from '../lib/Mailer';
 
 jest.mock('../services/UserService');
+jest.mock('../lib/Mailer');
 
 test('User with valid data should register normally', async () => {
     const user = {
@@ -26,6 +28,7 @@ test('User with valid data should register normally', async () => {
         expect(status).toBe(201);
         expect(data).toBeTruthy();
         expect(data.data).toBe(user);
+        expect(Mailer.sendConfirmation).toBeCalled();
     } catch (err) {
         expect(err).toBeFalsy();
     }
@@ -58,6 +61,7 @@ test("User with an already registered cpf can't register", async () => {
         expect(data).toBeTruthy();
         expect(status).toBe(422);
         expect(UserService.store).not.toBeCalled();
+        expect(Mailer.sendConfirmation).not.toBeCalled();
     } catch (err) {
         expect(err).toBeFalsy();
     }
@@ -188,4 +192,3 @@ test('User can delete its own data', async () => {
         expect(err).toBeFalsy();
     }
 });
-

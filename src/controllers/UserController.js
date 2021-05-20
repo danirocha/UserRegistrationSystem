@@ -1,4 +1,5 @@
 import UserService from '../services/UserService';
+import Mailer from '../lib/Mailer';
 import * as yup from 'yup';
 
 class UserController {
@@ -28,9 +29,11 @@ class UserController {
             if (user) {
                 return res.sendResponse({ status: 422, data: { message: 'This user already exists' } });
             }
-        
+
             const newUser = this.service.store({ name, email, cpf, password }); // TODO: use bcrypt for the password
-            
+
+            Mailer.sendConfirmation(email);
+
             return res.sendResponse({ status: 201, data: { message: 'User successfully registered', data: newUser } });
         } catch (err) {
             return res.sendResponse({ status: 422, data: { message: 'invalid data', errors: err.errors }});
