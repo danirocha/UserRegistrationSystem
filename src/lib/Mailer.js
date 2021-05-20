@@ -21,8 +21,7 @@ class Mailer {
       });
     }
 
-    sendConfirmation(email) {
-      const currentDate = new Date();
+    sendConfirmation(email, currentDate) {
       const expiration = new Date(currentDate.setDate(currentDate.getDate() + 7));
       const confirmationData = {
         token: crypto.randomBytes(20).toString('hex'),
@@ -35,6 +34,8 @@ class Mailer {
       }
 
       this.sendEmail(options);
+
+      return confirmationData;
     }
   }
   
