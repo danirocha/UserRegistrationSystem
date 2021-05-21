@@ -34,7 +34,9 @@ class UserController {
 
             const currentDate = new Date();
             const createdAt = (currentDate).toISOString();
+
             const newUser = this.userService.store({ name, email, cpf, password, isConfirmed: false, createdAt, }); // TODO: use bcrypt for the password
+            
             const confirmationData = await Mailer.sendConfirmation(email, currentDate);
 
             this.userConfirmationService.store({ userId: newUser.id, ...confirmationData });
