@@ -6,10 +6,14 @@ class UserVerificationRepository {
     }
 
     list(options) {
+        if (!options) {
+            return database.selectAll(this.root);
+        }
+
         if (options.latest) {
             return database.selectLatest(this.root);
         }
-
+        
         const property = Object.keys(options)[0];
         const value = options[property];
 

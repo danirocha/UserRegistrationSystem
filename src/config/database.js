@@ -24,6 +24,10 @@ class Database {
         return (index >= 0) ? this.db.getData(`/${rootElem}[${index}]`) : false;
     }
 
+    selectAll(rootElem) {
+        return this.db.getData(`/${rootElem}`);
+    }
+
     selectLatest(rootElem) {
         return this.db.getData(`/${rootElem}[-1]`);
     }

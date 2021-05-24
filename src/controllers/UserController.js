@@ -33,7 +33,7 @@ class UserController {
             }
 
             const currentDate = new Date();
-            const createdAt = (currentDate).toISOString();
+            const createdAt = (currentDate).toISOString().split('T')[0]; // TODO: generalize this rule
 
             const newUser = this.userService.store({ name, email, cpf, password, isVerified: false, createdAt, }); // TODO: use bcrypt for the password
             

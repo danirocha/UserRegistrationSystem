@@ -9,6 +9,7 @@ const routes = new Router();
 routes.post('/user', (req, res) => UserController.store(req, res));
 routes.put('/user/verify/:token', (req, res) => UserVerificationController.update(req, res));
 routes.post('/login', (req, res) => AuthController.store(req, res));
+routes.delete('/unverified', (req, res) => UserVerificationController.delete(req, res));
 
 routes.use(authMiddleware);
 

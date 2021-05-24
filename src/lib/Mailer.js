@@ -25,7 +25,7 @@ class Mailer {
       const expiration = new Date(currentDate.setDate(currentDate.getDate() + 7));
       const verificationData = {
         token: crypto.randomBytes(20).toString('hex'),
-        expiresAt: expiration.toISOString()
+        expiresAt: expiration.toISOString().split('T')[0]
       };
 
       const options = {

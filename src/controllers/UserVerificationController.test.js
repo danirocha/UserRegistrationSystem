@@ -38,7 +38,7 @@ describe('#update', () => {
             const userVerification = {
                 userId: 1,
                 token: "VALID_CONFIRMATION_TOKEN",
-                expiresAt: yesterday.toISOString(),
+                expiresAt: yesterday.toISOString().split('T')[0],
                 id: 1
             };
             const req = {
@@ -71,7 +71,7 @@ describe('#update', () => {
             const userVerification = {
                 userId: 1,
                 token: "VALID_CONFIRMATION_TOKEN",
-                expiresAt: tomorrow.toISOString(),
+                expiresAt: tomorrow.toISOString().split('T')[0],
                 id: 1
             };
             const req = {
