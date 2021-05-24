@@ -1,10 +1,10 @@
 import UserController from './UserController';
 import UserService from '../services/UserService';
-import userConfirmationService from '../services/userConfirmationService';
+import UserVerificationService from '../services/UserVerificationService';
 import Mailer from '../lib/Mailer';
 
 jest.mock('../services/UserService');
-jest.mock('../services/userConfirmationService');
+jest.mock('../services/UserVerificationService');
 jest.mock('../lib/Mailer');
 
 test('User with valid data should register normally', async () => {
@@ -23,7 +23,7 @@ test('User with valid data should register normally', async () => {
 
     UserService.list.mockReturnValue(null);
     UserService.store.mockReturnValue(user);
-    userConfirmationService.store.mockReturnValue({});
+    UserVerificationService.store.mockReturnValue({});
 
     try {
         const { status, data } = await UserController.store(req, res);
@@ -31,7 +31,7 @@ test('User with valid data should register normally', async () => {
         expect(status).toBe(201);
         expect(data).toBeTruthy();
         expect(data.data).toBe(user);
-        expect(Mailer.sendConfirmation).toBeCalled();
+        expect(Mailer.sendVerification).toBeCalled();
     } catch (err) {
         expect(err).toBeFalsy();
     }
@@ -64,8 +64,8 @@ test("User with an already registered cpf can't register", async () => {
         expect(data).toBeTruthy();
         expect(status).toBe(422);
         expect(UserService.store).not.toBeCalled();
-        expect(Mailer.sendConfirmation).not.toBeCalled();
-        expect(userConfirmationService.store).not.toBeCalled();
+        expect(Mailer.sendVerification).not.toBeCalled();
+        expect(UserVerificationService.store).not.toBeCalled();
     } catch (err) {
         expect(err).toBeFalsy();
     }

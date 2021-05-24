@@ -1,12 +1,12 @@
 import UserService from '../services/UserService';
-import UserConfirmationService from '../services/UserConfirmationService';
+import UserVerificationService from '../services/UserVerificationService';
 import Mailer from '../lib/Mailer';
 import * as yup from 'yup';
 
 class UserController {
     constructor () {
         this.userService = UserService;
-        this.userConfirmationService = UserConfirmationService;
+        this.UserVerificationService = UserVerificationService;
         this.newUserSchema = yup.object().shape({
             name: yup.string().required(),
             email: yup.string().email().required(),
@@ -35,11 +35,11 @@ class UserController {
             const currentDate = new Date();
             const createdAt = (currentDate).toISOString();
 
-            const newUser = this.userService.store({ name, email, cpf, password, isConfirmed: false, createdAt, }); // TODO: use bcrypt for the password
+            const newUser = this.userService.store({ name, email, cpf, password, isVerified: false, createdAt, }); // TODO: use bcrypt for the password
             
-            const confirmationData = await Mailer.sendConfirmation(email, currentDate);
+            const verificationData = await Mailer.sendVerification(email, currentDate);
 
-            this.userConfirmationService.store({ userId: newUser.id, ...confirmationData });
+            this.UserVerificationService.store({ userId: newUser.id, ...verificationData });
 
             return res.sendResponse({ status: 201, data: { message: 'User successfully registered', data: newUser } });
         } catch (err) {

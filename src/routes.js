@@ -1,13 +1,13 @@
 import { Router } from 'express';
 import UserController from './controllers/UserController';
-import UserConfirmationController from './controllers/UserConfirmationController';
+import UserVerificationController from './controllers/UserVerificationController';
 import AuthController from './controllers/AuthController';
 import authMiddleware from './middlewares/auth';
 
 const routes = new Router();
 
 routes.post('/user', (req, res) => UserController.store(req, res));
-routes.put('/user/confirmation', (req, res) => UserConfirmationController.update(req, res));
+routes.put('/user/verify/:token', (req, res) => UserVerificationController.update(req, res));
 routes.post('/login', (req, res) => AuthController.store(req, res));
 
 routes.use(authMiddleware);

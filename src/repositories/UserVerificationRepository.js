@@ -1,8 +1,8 @@
 import database from '../config/database';
 
-class UserConfirmationRepository {
+class UserVerificationRepository {
     constructor () {
-        this.root = 'user_confirmation';
+        this.root = 'user_verification';
     }
 
     list(options) {
@@ -29,4 +29,4 @@ class UserConfirmationRepository {
     }
 }
 
-export default new UserConfirmationRepository();
+export default new UserVerificationRepository();
