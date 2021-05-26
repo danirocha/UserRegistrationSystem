@@ -13,12 +13,29 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Installing
 
+To install the project, follow the instructions below
+
+- Navigate to the your project's folder
+
+```cd ~/SistemaCadastro/```
+
+- run command
+
+```yarn install```
+
 ### Running
+
+To execute your project, follow the instruction below:
+
+- To start the project, run the command
+
+```yarn dev```
 
 ## Built With
 
 - [Node](https://nodejs.org/en/) - A JavaScript runtime built on Chrome's V8 JavaScript engine
 - [Jest](https://jestjs.io/) - JavaScript Testing Framework
+- [Yup](https://github.com/jquense/yup) - A JavaScript schema builder for value parsing and validation
 
 ## Authors
 
