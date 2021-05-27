@@ -28,22 +28,22 @@ class UserVerificationController {
     }
     
     delete (req, res) {
-        const today = (new Date()).toISOString().split('T')[0];
         const verificationData = this.UserVerificationService.list();
+        
+        if (!verificationData) {
+            return res.sendResponse({status: 200, data: { message: 'No unverified users to delete', data: [] } });
+        }
+        
+        const today = (new Date()).toISOString().split('T')[0];
         const expiredVerifications = verificationData.filter(item => item.expiresAt < today);
         const expiredUserIds = expiredVerifications.map(item => item.userId);
-
-        if (!expiredUserIds.length) {
-            return res.sendResponse({status: 200, data: { message: 'No unverified users to delete', data: expiredUserIds } });
-        }
-
         const users = this.UserService.list();
-        const unverifiedUsers = users.filter(item => expiredUserIds.indexOf(item.id) > -1 ).filter(item => !item.isVerified);
-
-        if (!unverifiedUsers.length) {
-            return res.sendResponse({status: 200, data: { message: 'No unverified users to delete', data: unverifiedUsers } });
+        
+        if (!users) {
+            return res.sendResponse({status: 200, data: { message: 'No unverified users to delete', data: [] } });
         }
-
+        
+        const unverifiedUsers = users.filter(item => expiredUserIds.indexOf(item.id) > -1 ).filter(item => !item.isVerified);
         const deletedUsersData = [];
 
         for (let key in unverifiedUsers) {
