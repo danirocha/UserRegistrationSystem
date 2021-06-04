@@ -13,7 +13,17 @@ class UserService {
         return this.repository.list(options);
     }
 
-    async store(userDTO) {
+    listById (userId) {
+        const user = this.repository.list({ id: userId });
+        
+        if (!user) {
+            throw {};
+        }
+
+        return user;
+    }
+
+    async store (userDTO) {
         const { name, email, cpf, password } = userDTO;
     
         const userAlreadyExists = this.list({ cpf });

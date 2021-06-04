@@ -26,16 +26,15 @@ class UserController {
         };
       }
 
-    list (req, res) {
-      const userId = req.user.id;
-    
-      const user = this.UserService.list({ id: userId });
-    
-      if (!user) {
-          return res.sendResponse({ status: 422, data: { message: "User not found" } });
-      }
-      
-      return res.sendResponse({ status: 200, data: user });
+    async list (req, res) {
+        try {
+            const userId = req.user.id;
+            const user = await this.UserService.listById(userId);
+
+            return res.sendResponse({ status: 200, data: user });
+        } catch (err) {
+            return res.sendResponse({ status: 422, data: { message: "User not found" } });
+        }      
     }
 
     async update (req, res) {
