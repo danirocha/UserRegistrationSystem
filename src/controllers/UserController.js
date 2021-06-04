@@ -1,29 +1,15 @@
 import UserService from '../services/UserService';
 import UserVerificationService from '../services/UserVerificationService';
 import Mailer from '../lib/Mailer';
-import * as yup from 'yup';
 
 class UserController {
     constructor () {
         this.userService = UserService;
         this.UserVerificationService = UserVerificationService;
-        this.newUserSchema = yup.object().shape({
-            name: yup.string().required(),
-            email: yup.string().email().required(),
-            cpf: yup.string().length(11).matches(/\d/).required(),
-            password: yup.string().min(6).required()
-        });
-        this.updatedUserSchema = yup.object().shape({
-            name: yup.string(),
-            email: yup.string().email(),
-            cpf: yup.string().length(11).matches(/\d/),
-            password: yup.string().min(6)
-        });
     }
 
     async store (req, res) {
         try {
-            await this.newUserSchema.validate(req.body, { abortEarly: false });
             const { name, email, cpf, password } = req.body;
         
             const user = this.userService.list({ cpf });
@@ -61,8 +47,6 @@ class UserController {
 
     async update (req, res) {
         try {
-            await this.updatedUserSchema.validate(req.body, { abortEarly: false });
-
             const { name, email, cpf, password } = req.body;
             const userId = req.user.id;      
             const user = this.userService.list({ id: userId });
