@@ -1,42 +1,35 @@
 import UserService from '../services/UserService';
-import UserVerificationService from '../services/UserVerificationService';
-import Mailer from '../lib/Mailer';
 
 class UserController {
     constructor () {
-        this.userService = UserService;
-        this.UserVerificationService = UserVerificationService;
+        this.UserService = UserService;
     }
 
     async store (req, res) {
         try {
-            const { name, email, cpf, password } = req.body;
-        
-            const user = this.userService.list({ cpf });
-        
-            if (user) {
-                return res.sendResponse({ status: 422, data: { message: 'This user already exists' } });
-            }
-
-            const currentDate = new Date();
-            const createdAt = (currentDate).toISOString().split('T')[0]; // TODO: generalize this rule
-
-            const newUser = this.userService.store({ name, email, cpf, password, isVerified: false, createdAt, }); // TODO: use bcrypt for the password
-            
-            const verificationData = await Mailer.sendVerification(email, currentDate);
-
-            this.UserVerificationService.store({ userId: newUser.id, ...verificationData });
+            const newUser = await this.UserService.store(req.body);
 
             return res.sendResponse({ status: 201, data: { message: 'User successfully registered', data: newUser } });
         } catch (err) {
-            return res.sendResponse({ status: 422, data: { message: 'invalid data', errors: err.errors }});
+            const errorResponse = {
+                status: 422,
+                data: {
+                    message: 'Invalid registration data'
+                }
+            };
+
+            if (err.user_already_exists) {
+                errorResponse.data.message = 'This user already exists';
+            }
+
+            return res.sendResponse(errorResponse);
         };
       }
 
     list (req, res) {
       const userId = req.user.id;
     
-      const user = this.userService.list({ id: userId });
+      const user = this.UserService.list({ id: userId });
     
       if (!user) {
           return res.sendResponse({ status: 422, data: { message: "User not found" } });
@@ -49,21 +42,21 @@ class UserController {
         try {
             const { name, email, cpf, password } = req.body;
             const userId = req.user.id;      
-            const user = this.userService.list({ id: userId });
+            const user = this.UserService.list({ id: userId });
             
             if (!user) {
                 return res.sendResponse({ status: 422, data: { message: "User not found" } });
             }
 
             if (cpf) {
-                const existingCPF = this.userService.list({ cpf });
+                const existingCPF = this.UserService.list({ cpf });
             
                 if (existingCPF && existingCPF.id != userId) {
                     return res.sendResponse({ status: 400, data: { message: 'This CPF is already in use' } });
                 }
             }
             
-            const updatedUser = this.userService.update(userId, { name, email, cpf, password });
+            const updatedUser = this.UserService.update(userId, { name, email, cpf, password });
             
             return res.sendResponse({ status: 200, data: { message: 'User successfully updated', data: updatedUser } });
         } catch (err) {
@@ -73,13 +66,13 @@ class UserController {
 
     delete (req, res) {
         const userId = req.user.id;
-        const user = this.userService.list({ id: userId });
+        const user = this.UserService.list({ id: userId });
     
         if (!user) {
             return res.sendResponse({status: 422, data: { message: "User not found" } });
         }
 
-        const deletedUser = this.userService.delete(userId);
+        const deletedUser = this.UserService.delete(userId);
       
         return res.sendResponse({status: 200, data: { message: 'User successfully deleted', data: deletedUser } });
     }
