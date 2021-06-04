@@ -60,17 +60,15 @@ class UserController {
         };
     }
 
-    delete (req, res) {
-        const userId = req.user.id;
-        const user = this.UserService.list({ id: userId });
-    
-        if (!user) {
-            return res.sendResponse({status: 422, data: { message: "User not found" } });
-        }
+    async delete (req, res) {
+      try {
+          const userId = req.user.id;
+          const deletedUser = await this.UserService.delete(userId);
 
-        const deletedUser = this.UserService.delete(userId);
-      
-        return res.sendResponse({status: 200, data: { message: 'User successfully deleted', data: deletedUser } });
+          return res.sendResponse({ status: 200, data: { message: 'User successfully deleted', data: deletedUser } });
+      } catch (err) {
+          return res.sendResponse({ status: 422, data: { message: "User not found" } });
+      }     
     }
 }
 

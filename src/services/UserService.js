@@ -67,8 +67,16 @@ class UserService {
         return updatedUser;
     }
 
-    delete(id) {
-        return this.repository.delete(id);
+    delete(userId) {
+        const user = this.repository.list({ id: userId });
+        
+        if (!user) {
+            throw { user_not_found: true };
+        }
+        
+        const deletedUser = this.repository.delete(userId);
+        
+        return deletedUser;
     }
 }
 
