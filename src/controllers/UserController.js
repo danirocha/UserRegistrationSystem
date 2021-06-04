@@ -39,27 +39,24 @@ class UserController {
 
     async update (req, res) {
         try {
-            const { name, email, cpf, password } = req.body;
-            const userId = req.user.id;      
-            const user = this.UserService.list({ id: userId });
-            
-            if (!user) {
-                return res.sendResponse({ status: 422, data: { message: "User not found" } });
-            }
-
-            if (cpf) {
-                const existingCPF = this.UserService.list({ cpf });
-            
-                if (existingCPF && existingCPF.id != userId) {
-                    return res.sendResponse({ status: 400, data: { message: 'This CPF is already in use' } });
-                }
-            }
-            
-            const updatedUser = this.UserService.update(userId, { name, email, cpf, password });
+            const updatedUser = await this.UserService.update(req.user.id, req.body);
             
             return res.sendResponse({ status: 200, data: { message: 'User successfully updated', data: updatedUser } });
-        } catch (err) {
-            return res.sendResponse({ status: 422, data: { message: 'invalid data', errors: err.errors }});
+          } catch (err) {
+            const errorResponse = {
+                status: 422,
+                data: {
+                    message: 'Invalid update data'
+                }
+            };
+
+            if (err.user_not_found) {
+                errorResponse.data.message = 'User not found';
+            } else if (err.cpf_in_use) {
+              errorResponse.data.message = 'This CPF is already in use';
+            }
+
+            return res.sendResponse(errorResponse);
         };
     }
 

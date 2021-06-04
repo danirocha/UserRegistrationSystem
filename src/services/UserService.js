@@ -24,9 +24,7 @@ class UserService {
     }
 
     async store (userDTO) {
-        const { name, email, cpf, password } = userDTO;
-    
-        const userAlreadyExists = this.list({ cpf });
+        const userAlreadyExists = this.repository.list({ cpf: userDTO.cpf });
     
         if (userAlreadyExists) {
             throw { user_already_exists: true };
@@ -35,22 +33,38 @@ class UserService {
         const currentDate = new Date();
         const createdAt = (currentDate).toISOString().split('T')[0]; // TODO: generalize this rule
 
-        const userData = { name, email, cpf, password, isVerified: false, createdAt, }; // TODO: use bcrypt for the password
+        const userData = { ...userDTO, isVerified: false, createdAt, }; // TODO: use bcrypt for the password
         
         this.repository.store(userData);
         
         const newUser = this.repository.list({ latest: true });
-        const verificationData = await Mailer.sendVerification(email, currentDate);
+        const verificationData = await Mailer.sendVerification(userDTO.email, currentDate);
 
         this.UserVerificationService.store({ userId: newUser.id, ...verificationData });
 
         return newUser;
     }
 
-    update(id, data) {
-        this.repository.update(id, data);
+    update(userId, userDTO) {
+        const user = this.repository.list({ id: userId });
+        
+        if (!user) {
+            throw { user_not_found: true };
+        }
 
-        return this.repository.list({ id });
+        if (userDTO.cpf) {
+            const existingCPF = this.repository.list({ cpf: userDTO.cpf });
+        
+            if (existingCPF && existingCPF.id != userId) {
+                throw  { cpf_in_use: true };
+            }
+        }
+        
+        this.repository.update(userId, userDTO);
+
+        const updatedUser = this.repository.list({ id: userId });
+
+        return updatedUser;
     }
 
     delete(id) {
