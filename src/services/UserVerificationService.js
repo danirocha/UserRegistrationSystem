@@ -8,13 +8,7 @@ class UserVerificationService {
     list(options) {
         return this.repository.list(options);
     }
-
-    store(data) {
-        this.repository.store(data);
-
-        return this.repository.list({ latest: true });
-    }
-
+    
     delete(id) {
         return this.repository.delete(id);
     }

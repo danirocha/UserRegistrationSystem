@@ -1,30 +1,34 @@
 
-import repository from '../repositories/UserRepository';
-import UserVerificationService from './UserVerificationService';
+import UserRepository from '../repositories/UserRepository';
+import UserVerificationRepository from '../repositories/UserVerificationRepository';
 import Mailer from '../lib/Mailer';
 
 class UserService {
     constructor () {
-        this.repository = repository;
-        this.UserVerificationService = UserVerificationService;
+        this.UserRepository = UserRepository;
+        this.UserVerificationRepository = UserVerificationRepository;
     }
 
     list(options) {
-        return this.repository.list(options);
+        const user = this.UserRepository.list(options);
+        const verificationData = this.UserVerificationRepository.list({ userId: user.id });
+
+        return { ...user, verificationData };
     }
 
     listById (userId) {
-        const user = this.repository.list({ id: userId });
+        const user = this.UserRepository.list({ id: userId });
+        const verificationData = this.UserVerificationRepository.list({ userId });
         
         if (!user) {
             throw {};
         }
 
-        return user;
+        return { ...user, verificationData };
     }
 
     async store (userDTO) {
-        const userAlreadyExists = this.repository.list({ cpf: userDTO.cpf });
+        const userAlreadyExists = this.UserRepository.list({ cpf: userDTO.cpf });
     
         if (userAlreadyExists) {
             throw { user_already_exists: true };
@@ -35,48 +39,70 @@ class UserService {
 
         const userData = { ...userDTO, isVerified: false, createdAt, }; // TODO: use bcrypt for the password
         
-        this.repository.store(userData);
+        this.UserRepository.store(userData);
         
-        const newUser = this.repository.list({ latest: true });
+        const newUser = this.UserRepository.list({ latest: true });
         const verificationData = await Mailer.sendVerification(userDTO.email, currentDate);
 
-        this.UserVerificationService.store({ userId: newUser.id, ...verificationData });
+        this.UserVerificationRepository.store({ userId: newUser.id, ...verificationData });
 
-        return newUser;
+        return { ...newUser, verificationData };;
     }
 
     update(userId, userDTO) {
-        const user = this.repository.list({ id: userId });
+        const user = this.UserRepository.list({ id: userId });
         
         if (!user) {
             throw { user_not_found: true };
         }
 
         if (userDTO.cpf) {
-            const existingCPF = this.repository.list({ cpf: userDTO.cpf });
+            const existingCPF = this.UserRepository.list({ cpf: userDTO.cpf });
         
             if (existingCPF && existingCPF.id != userId) {
                 throw  { cpf_in_use: true };
             }
         }
         
-        this.repository.update(userId, userDTO);
+        this.UserRepository.update(userId, userDTO);
 
-        const updatedUser = this.repository.list({ id: userId });
+        const updatedUser = this.UserRepository.list({ id: userId });
+        const verificationData = this.UserVerificationRepository.list({ userId });
 
-        return updatedUser;
+        return { ...updatedUser, verificationData };
     }
 
     delete(userId) {
-        const user = this.repository.list({ id: userId });
+        const user = this.UserRepository.list({ id: userId });
+        const verificationData = this.UserVerificationRepository.list({ userId });
         
         if (!user) {
             throw { user_not_found: true };
         }
         
-        const deletedUser = this.repository.delete(userId);
+        this.UserRepository.delete(userId);
+        this.UserVerificationRepository.delete(verificationData.id);
         
-        return deletedUser;
+        return { ...user, verificationData };
+    }
+
+    verify(verificationToken) {
+        const userVerification = this.UserVerificationRepository.list({ token: verificationToken });
+
+        if (!userVerification || !userVerification.userId) {
+            throw {};
+        }
+
+        const tokenExpiration = new Date(userVerification.expiresAt);
+        const currentDate = new Date();
+
+        if (currentDate > tokenExpiration) {
+            throw { verification_expired: true };
+        }
+
+        const verifiedUser = this.update(userVerification.userId, { isVerified: true });
+
+        return verifiedUser;
     }
 }
 
