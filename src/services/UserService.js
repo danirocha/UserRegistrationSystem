@@ -104,6 +104,31 @@ class UserService {
 
         return verifiedUser;
     }
+
+    deleteUnverifiedUsers() {
+        const verificationData = this.UserVerificationRepository.list();
+        
+        if (!verificationData) return;
+        
+        const today = (new Date()).toISOString().split('T')[0];
+        const expiredVerifications = verificationData.filter(item => item.expiresAt < today);
+        const expiredUserIds = expiredVerifications.map(item => item.userId);
+        const users = this.UserRepository.list();
+        
+        if (!users) return;
+        
+        const unverifiedUsers = users.filter(item => expiredUserIds.indexOf(item.id) > -1 ).filter(item => !item.isVerified);
+        const deletedUsersData = [];
+
+        for (let key in unverifiedUsers) {
+            const userId = unverifiedUsers[key].id;
+            const deletedUser = this.delete(userId);
+
+            deletedUsersData.push(deletedUser);
+        }
+
+        return deletedUsersData;
+    }
 }
 
 export default new UserService();
