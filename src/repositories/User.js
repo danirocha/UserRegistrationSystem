@@ -1,4 +1,4 @@
-import database from '../config/database';
+import database from '../lib/Database';
 
 class User {
     constructor () {
