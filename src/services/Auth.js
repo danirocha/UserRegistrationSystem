@@ -1,9 +1,8 @@
 import jwt from 'jsonwebtoken';
 import authConfig from '../config/auth';
-import UserService from './UserService';
 
-class AuthService {
-    constructor () {
+export default class Auth {
+    constructor (UserService) {
         this.UserService = UserService;
     }
 
@@ -21,5 +20,3 @@ class AuthService {
         return { user: { name, email }, token: authToken };
     }
 }
-
-export default new AuthService();

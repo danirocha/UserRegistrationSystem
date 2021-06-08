@@ -1,7 +1,5 @@
-import AuthService from '../services/AuthService';
-
-class AuthController {
-    constructor () {
+export default class Auth {
+    constructor (AuthService) {
        this.AuthService = AuthService;
     }
 
@@ -15,5 +13,3 @@ class AuthController {
         };
       }
 }
-
-export default new AuthController();

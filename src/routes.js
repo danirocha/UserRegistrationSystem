@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import UserController from './controllers/UserController';
 import UserVerificationController from './controllers/UserVerificationController';
-import AuthController from './controllers/AuthController';
+import { AuthController } from './controllers';
 import authMiddleware from './middlewares/auth';
 import * as validationMiddleware from './middlewares/validation';
 
