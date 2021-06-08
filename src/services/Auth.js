@@ -1,5 +1,4 @@
-import jwt from 'jsonwebtoken';
-import authConfig from '../config/auth';
+import Auth from '../lib/Auth';
 
 export default class Auth {
     constructor (UserService) {
@@ -15,7 +14,7 @@ export default class Auth {
         }
 
         const { id, name } = user;
-        const authToken = jwt.sign({ id }, authConfig.secret, authConfig.options);
+        const authToken = Auth.generateToken(id);
 
         return { user: { name, email }, token: authToken };
     }

@@ -1,6 +1,4 @@
-import jwt from 'jsonwebtoken';
-import { promisify } from 'util';
-import authConfig from '../config/auth';
+import Auth from '../lib/Auth';
 
 export default async (req, res, next) => {
     const authHeader = req.headers['authorization'];
@@ -11,9 +9,10 @@ export default async (req, res, next) => {
     }
 
     try {
-        const user = await promisify(jwt.verify)(token, authConfig.secret);
+        const user = await Auth.decryptToken(token);
 
         req.user = user;
+
         next();
     } catch (err) {
         return res.status(403).json({ message: "Unauthorized" });
