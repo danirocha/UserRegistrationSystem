@@ -1,6 +1,6 @@
 import express from 'express';
 import routes from './routes';
-import utils from './libs/Utils';
+import utils from '../libs/Utils';
 import logMiddleware from './middlewares/log';
 import resMiddleware from './middlewares/res';
 

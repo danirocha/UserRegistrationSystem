@@ -4,16 +4,18 @@ export default (req, res, next) => {
 
   const _getError = error => {
       errorMessage = error.message;
-  }
+  };
 
   const _logClose = () => {
       _removeHandlers();
       log(req, res, "Client aborted.");
   };
+
   const _logError = error => {
       _removeHandlers();
       log(req, res, error.message);
   };
+
   const _logFinish = () => {
       _removeHandlers();
       log(req, res, requestErrorMessage);
@@ -24,7 +26,7 @@ export default (req, res, next) => {
       res.off("close", _logClose);
       res.off("error", _logError);
       res.off("finish", _logFinish);
-      };
+  };
 
   const log = (req, res, errorMessage) => {
     const { rawHeaders, httpVersion, method, socket, url, body } = req;

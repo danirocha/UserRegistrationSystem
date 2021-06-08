@@ -1,4 +1,4 @@
-import { AuthService, UserService } from '../services';
+import { AuthService, UserService } from '../../services';
 import _AuthController from './Auth';
 import _UserController from './User';
 import _UserVerificationController from './UserVerification';

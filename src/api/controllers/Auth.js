@@ -11,5 +11,5 @@ export default class Auth {
         } catch (err) {
             return res.sendResponse({ status: 422, data: { message: 'invalid login data' } });
         };
-      }
+    }
 }

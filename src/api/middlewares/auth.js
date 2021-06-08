@@ -1,4 +1,4 @@
-import Auth from '../libs/Auth';
+import Auth from '../../libs/Auth';
 
 export default async (req, res, next) => {
     const authHeader = req.headers['authorization'];
