@@ -1,4 +1,4 @@
-import Mailer from '../lib/Mailer';
+import Mailer from '../libs/Mailer';
 
 export default class User {
     constructor (UserRepository, UserVerificationRepository) {

@@ -1,4 +1,4 @@
-import Database from '../lib/Database';
+import Database from '../libs/Database';
 
 class UserVerification {
     constructor () {

@@ -1,4 +1,4 @@
-import Auth from '../lib/Auth';
+import Auth from '../libs/Auth';
 
 export default class Auth {
     constructor (UserService) {
