@@ -1,4 +1,4 @@
-import database from '../lib/Database';
+import Database from '../lib/Database';
 
 class UserVerification {
     constructor () {
@@ -7,29 +7,29 @@ class UserVerification {
 
     list(options) {
         if (!options) {
-            return database.selectAll(this.root);
+            return Database.selectAll(this.root);
         }
 
         if (options.latest) {
-            return database.selectLatest(this.root);
+            return Database.selectLatest(this.root);
         }
         
         const property = Object.keys(options)[0];
         const value = options[property];
 
-        return database.select(this.root, property, value);
+        return Database.select(this.root, property, value);
     }
 
     store(data) {
-        database.insert(this.root, data);
+        Database.insert(this.root, data);
     }
 
     update(id, data) {
-        database.update(this.root, id, data);
+        Database.update(this.root, id, data);
     }
 
     delete(id) {
-        return database.delete(this.root, id)
+        return Database.delete(this.root, id)
     }
 }
 
