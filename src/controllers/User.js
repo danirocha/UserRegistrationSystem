@@ -1,7 +1,5 @@
-import UserService from '../services/UserService';
-
-class UserController {
-    constructor () {
+export default class User {
+    constructor (UserService) {
         this.UserService = UserService;
     }
 
@@ -71,5 +69,3 @@ class UserController {
       }     
     }
 }
-
-export default new UserController();

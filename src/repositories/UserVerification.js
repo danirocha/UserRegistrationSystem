@@ -1,6 +1,6 @@
 import database from '../config/database';
 
-class UserVerificationRepository {
+class UserVerification {
     constructor () {
         this.root = 'user_verification';
     }
@@ -33,4 +33,4 @@ class UserVerificationRepository {
     }
 }
 
-export default new UserVerificationRepository();
+export default new UserVerification();

@@ -1,10 +1,7 @@
-
-import UserRepository from '../repositories/UserRepository';
-import UserVerificationRepository from '../repositories/UserVerificationRepository';
 import Mailer from '../lib/Mailer';
 
-class UserService {
-    constructor () {
+export default class User {
+    constructor (UserRepository, UserVerificationRepository) {
         this.UserRepository = UserRepository;
         this.UserVerificationRepository = UserVerificationRepository;
     }
@@ -130,5 +127,3 @@ class UserService {
         return deletedUsersData;
     }
 }
-
-export default new UserService();

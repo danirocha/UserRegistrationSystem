@@ -1,6 +1,6 @@
 import database from '../config/database';
 
-class UserRepository {
+class User {
     constructor () {
         this.root = 'user';
     }
@@ -33,4 +33,4 @@ class UserRepository {
     }
 }
 
-export default new UserRepository();
+export default new User();

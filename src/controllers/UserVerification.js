@@ -1,7 +1,5 @@
-import UserService from '../services/UserService';
-
-class UserVerificationController {
-    constructor () {
+export default class UserVerification {
+    constructor (UserService) {
         this.UserService = UserService;
     }
 
@@ -33,5 +31,3 @@ class UserVerificationController {
         return res.sendResponse({status: 200, data: { message: 'Unverified users deleted', data: deletedUsersData } });
     }
 }
-
-export default new UserVerificationController();
