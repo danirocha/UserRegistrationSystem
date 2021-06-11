@@ -1,14 +1,11 @@
-import * as yup from 'yup';
+import Schema from '../../libs/Schema';
 
 const login = async (req, res, next) => {
     const loginDTO = req.body;
-    const loginSchema = yup.object().shape({
-        email: yup.string().email().required(),
-        password: yup.string().required()
-    });
+    const loginSchema = Schema.generateLoginSchema();
     
     try {
-        await loginSchema.validate(loginDTO, { abortEarly: false });
+        await Schema.validate(loginSchema, loginDTO);
 
         next();
     } catch (err) {
@@ -18,15 +15,10 @@ const login = async (req, res, next) => {
 
 const storeUser = async (req, res, next) => {
     const userDTO = req.body;
-    const newUserSchema = yup.object().shape({
-        name: yup.string().required(),
-        email: yup.string().email().required(),
-        cpf: yup.string().length(11).matches(/\d/).required(),
-        password: yup.string().min(6).required()
-    });
+    const newUserSchema = Schema.generateUserSchema();
     
     try {
-        await newUserSchema.validate(userDTO, { abortEarly: false });
+        await Schema.validate(newUserSchema, userDTO);
 
         next();
     } catch (err) {
@@ -36,15 +28,10 @@ const storeUser = async (req, res, next) => {
 
 const updateUser = async (req, res, next) => {
     const userDTO = req.body;
-    const updatedUserSchema = yup.object().shape({
-        name: yup.string(),
-        email: yup.string().email(),
-        cpf: yup.string().length(11).matches(/\d/),
-        password: yup.string().min(6)
-    });
+    const updatedUserSchema = Schema.generateUserSchema({ required: false });
     
     try {
-        await updatedUserSchema.validate(userDTO, { abortEarly: false });
+        await Schema.validate(updatedUserSchema, userDTO);
 
         next();
     } catch (err) {
