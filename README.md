@@ -2,6 +2,10 @@
 
 A basic REST API for a user registration system using Node.js
 
+### Review videos:
+
+- [1st iteration](https://vimeo.com/548984362/6124e97343)
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
