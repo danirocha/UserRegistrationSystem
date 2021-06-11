@@ -15,6 +15,8 @@ These instructions will get you a copy of the project up and running on your loc
 
 To install the project, follow the instructions below
 
+- First, download the repository or clone it with the provided URL
+
 - Navigate to the your project's folder
 
 ```cd ~/SistemaCadastro/```
@@ -27,7 +29,7 @@ To install the project, follow the instructions below
 
 To execute your project, follow the instruction below:
 
-- To start the project, run the command
+- To start the project, run the command<!-- TODO: remove this instruction when the project is running at Docker  -->
 
 ```yarn dev```
 
