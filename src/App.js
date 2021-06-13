@@ -25,6 +25,6 @@ class App {
     }
 }
 
-const app = new App().server;
+const app = new App();
 
-app.listen(3333);
+app.server.listen(3333);

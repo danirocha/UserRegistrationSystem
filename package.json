@@ -6,8 +6,8 @@
   "author": "Daniela Rocha (github.com/danirocha)",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon src/app.js",
-    "dev:debug": "nodemon --inspect src/app.js",
+    "dev": "nodemon src/App.js",
+    "dev:debug": "nodemon --inspect src/App.js",
     "test": "jest --verbose",
     "test:coverage": "jest --verbose --coverage"
   },
