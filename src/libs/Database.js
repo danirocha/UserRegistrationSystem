@@ -21,15 +21,15 @@ class Database {
             return false;
         }
         
-        return (index >= 0) ? this.db.getData(`/${rootElem}[${index}]`) : false;
+        return (index >= 0) ? { ...this.db.getData(`/${rootElem}[${index}]`) } : false;
     }
 
     selectAll(rootElem) {
-        return this.db.getData(`/${rootElem}`);
-    }
+        const items = this.db.getData(`/${rootElem}`);
 
-    selectLatest(rootElem) {
-        return this.db.getData(`/${rootElem}[-1]`);
+        if (!items) return;
+
+        return items.map(item => ({ ...item }));
     }
 
     insert(rootElem, insertObj) {
@@ -42,7 +42,7 @@ class Database {
 
         this.db.push(`/${rootElem}[]`, insertObj, true);
 
-        return this.db.getData(`/${rootElem}[-1]`);
+        return { ...this.db.getData(`/${rootElem}[-1]`) };
     }
 
     update(rootElem, elemId, updateObj) {
@@ -51,12 +51,12 @@ class Database {
 
         this.db.push(`/${rootElem}[${index}]`, { ...currentObj, ...utils.sanitizeObj(updateObj) }, true);
 
-        return this.db.getData(`/${rootElem}[${index}]`);
+        return { ...this.db.getData(`/${rootElem}[${index}]`) };
     }
 
     delete(rootElem, elemId) {
         const index = this.db.getIndex(`/${rootElem}`, elemId, "id");
-        const deletedElem = this.db.getData(`/${rootElem}[${index}]`);
+        const deletedElem = { ...this.db.getData(`/${rootElem}[${index}]`) };
         
         this.db.delete(`/${rootElem}[${index}]`);
 

@@ -1,27 +1,22 @@
 import Mailer from '../libs/Mailer';
 
 export default class User {
-    constructor (UserRepository, UserVerificationRepository) {
+    constructor (UserRepository) {
         this.UserRepository = UserRepository;
-        this.UserVerificationRepository = UserVerificationRepository;
     }
 
     list(options) {
-        const user = this.UserRepository.list(options);
-        const verificationData = this.UserVerificationRepository.list({ userId: user.id });
-
-        return { ...user, verificationData };
+        return this.UserRepository.list(options);
     }
 
     listById (userId) {
         const user = this.UserRepository.list({ id: userId });
-        const verificationData = this.UserVerificationRepository.list({ userId });
         
         if (!user) {
             throw {};
         }
 
-        return { ...user, verificationData };
+        return user;
     }
 
     async store (userDTO) {
@@ -33,17 +28,13 @@ export default class User {
 
         const currentDate = new Date();
         const createdAt = (currentDate).toISOString().split('T')[0]; // TODO: generalize this rule
-
         const userData = { ...userDTO, isVerified: false, createdAt, }; // TODO: use bcrypt for the password
+        const verificationData = await Mailer.generateVerificationData(currentDate)
+        const newUser = this.UserRepository.store({ ...userData, verificationData });
         
-        this.UserRepository.store(userData);
-        
-        const newUser = this.UserRepository.list({ latest: true });
-        const verificationData = await Mailer.sendVerification(userDTO.email, currentDate);
+        Mailer.sendVerification(userDTO.email, verificationData.token);
 
-        this.UserVerificationRepository.store({ userId: newUser.id, ...verificationData });
-
-        return { ...newUser, verificationData };;
+        return newUser;
     }
 
     update(userId, userDTO) {
@@ -60,61 +51,49 @@ export default class User {
                 throw  { cpf_in_use: true };
             }
         }
-        
-        this.UserRepository.update(userId, userDTO);
 
-        const updatedUser = this.UserRepository.list({ id: userId });
-        const verificationData = this.UserVerificationRepository.list({ userId });
+        const updatedUser = this.UserRepository.update(userId, userDTO);
 
-        return { ...updatedUser, verificationData };
+        return updatedUser;
     }
 
     delete(userId) {
         const user = this.UserRepository.list({ id: userId });
-        const verificationData = this.UserVerificationRepository.list({ userId });
         
         if (!user) {
             throw { user_not_found: true };
         }
         
-        this.UserRepository.delete(userId);
-        this.UserVerificationRepository.delete(verificationData.id);
+        const deletedUser = this.UserRepository.delete(userId);
         
-        return { ...user, verificationData };
+        return deletedUser;
     }
 
     verify(verificationToken) {
-        const userVerification = this.UserVerificationRepository.list({ token: verificationToken });
+        const verificationData = { token: verificationToken };
+        const user = this.UserRepository.list({ verificationData });
 
-        if (!userVerification || !userVerification.userId) {
+        if (!user) {
             throw {};
         }
 
-        const tokenExpiration = new Date(userVerification.expiresAt);
+        const tokenExpiration = new Date(user.verificationData.expiresAt);
         const currentDate = new Date();
 
         if (currentDate > tokenExpiration) {
             throw { verification_expired: true };
         }
 
-        const verifiedUser = this.update(userVerification.userId, { isVerified: true });
+        const verifiedUser = this.update(user.id, { isVerified: true });
 
         return verifiedUser;
     }
 
     deleteUnverifiedUsers() {
-        const verificationData = this.UserVerificationRepository.list();
-        
-        if (!verificationData) return;
-        
-        const today = (new Date()).toISOString().split('T')[0];
-        const expiredVerifications = verificationData.filter(item => item.expiresAt < today);
-        const expiredUserIds = expiredVerifications.map(item => item.userId);
-        const users = this.UserRepository.list();
-        
-        if (!users) return;
-        
-        const unverifiedUsers = users.filter(item => expiredUserIds.indexOf(item.id) > -1 ).filter(item => !item.isVerified);
+        const unverifiedUsers = this.UserRepository.listUnverified();
+
+        if (!unverifiedUsers) return;
+
         const deletedUsersData = [];
 
         for (let key in unverifiedUsers) {

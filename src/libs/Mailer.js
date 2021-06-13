@@ -13,6 +13,17 @@ class Mailer {
         auth,
       });
     }
+
+    generateVerificationData(currentDate) {
+      const expiration = new Date(currentDate.setDate(currentDate.getDate() + 7));
+
+      const verificationData = {
+        token: crypto.randomBytes(20).toString('hex'),
+        expiresAt: expiration.toISOString().split('T')[0]
+      }
+
+      return verificationData;
+    }
   
     sendEmail(options) {
       return this.transporter.sendMail({
@@ -21,21 +32,13 @@ class Mailer {
       });
     }
 
-    sendVerification(email, currentDate) {
-      const expiration = new Date(currentDate.setDate(currentDate.getDate() + 7));
-      const verificationData = {
-        token: crypto.randomBytes(20).toString('hex'),
-        expiresAt: expiration.toISOString().split('T')[0]
-      };
-
+    sendVerification(email, verificationToken) {
       const options = {
         to: email,
-        text: `To confirm your registration use the token below: ${verificationData.token}`,
+        text: `To confirm your registration use the token below: ${verificationToken}`,
       }
 
       this.sendEmail(options);
-
-      return verificationData;
     }
   }
   
