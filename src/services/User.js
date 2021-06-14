@@ -90,7 +90,7 @@ export default class User {
     }
 
     deleteUnverifiedUsers() {
-        const unverifiedUsers = this.UserRepository.listUnverified();
+        const unverifiedUsers = this.UserRepository.listUnverifiedAndExpired();
 
         if (!unverifiedUsers) return;
 

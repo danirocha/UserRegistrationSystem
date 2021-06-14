@@ -60,7 +60,7 @@ class User {
         return this._list(property, value);
     }
 
-    listUnverified() {
+    listUnverifiedAndExpired() {
         const allUsers = this._listAll();
         
         const today = (new Date()).toISOString().split('T')[0];
