@@ -18,10 +18,10 @@ class Database {
         try {    
             index = this.db.getIndex(`/${rootElem}`, value, property);
         } catch (err) {
-            return false;
+            return;
         }
         
-        return (index >= 0) ? { ...this.db.getData(`/${rootElem}[${index}]`) } : false;
+        return (index >= 0) ? { ...this.db.getData(`/${rootElem}[${index}]`) } : null;
     }
 
     selectAll(rootElem) {

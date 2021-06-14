@@ -1,4 +1,4 @@
-import Auth from '../libs/Auth';
+import AuthLib from '../libs/Auth';
 
 export default class Auth {
     constructor (UserService) {
@@ -14,7 +14,7 @@ export default class Auth {
         }
 
         const { id, name } = user;
-        const authToken = Auth.generateToken(id);
+        const authToken = AuthLib.generateToken(id);
 
         return { user: { name, email }, token: authToken };
     }

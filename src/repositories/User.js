@@ -11,7 +11,7 @@ class User {
     _list(property, value) {
         const user = Database.select(this.root.user, property, value);
 
-        if (!user) return false;
+        if (!user) return;
 
         const verificationData = Database.select(this.root.userVerification, 'userId', user.id);
 
@@ -21,7 +21,7 @@ class User {
     _listAll() {
         const users = Database.selectAll(this.root.user);
 
-        if (!users) return false;
+        if (!users) return;
 
         for (let key in users) {
             const user = users[key];
@@ -38,7 +38,7 @@ class User {
 
         const verificationData = Database.select(this.root.userVerification, property, value);
         
-        if (!verificationData) return false;
+        if (!verificationData) return;
         
         const user = Database.select(this.root.user, 'id', verificationData.userId);
 
