@@ -24,7 +24,7 @@ describe('#login', () => {
         } catch (err) {
             expect(err).toBeTruthy();
             expect(UserService.list).toBeCalledWith({ email: loginDTO.email });
-            expect(UserService.list).toReturnWith(null);
+            expect(UserService.list).toReturn();
         }
     });
     test("it throws an error when the email matches a user, but the password doesn't match the user's", () => {
@@ -45,7 +45,7 @@ describe('#login', () => {
         } catch (err) {
             expect(err).toBeTruthy();
             expect(UserService.list).toBeCalledWith({ email: loginDTO.email });
-            expect(UserService.list).toReturnWith(user);
+            expect(UserService.list).toReturn();
         }
     });
     test("it returns user's name, email and auth token when the email and password matches the data of an existing user", () => {
@@ -72,9 +72,9 @@ describe('#login', () => {
             expect(result).toBeTruthy();
             expect(result).toEqual(resultModel);
             expect(UserService.list).toBeCalledWith({ email: loginDTO.email });
-            expect(UserService.list).toReturnWith(user);
+            expect(UserService.list).toReturn();
             expect(AuthLib.generateToken).toBeCalledWith(user.id);
-            expect(AuthLib.generateToken).toReturnWith(authToken);
+            expect(AuthLib.generateToken).toReturn();
         } catch (err) {
             expect(err).toBeFalsy();
         }
