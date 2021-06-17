@@ -325,7 +325,7 @@ describe('#verify', () => {
 });
 
 describe('#deleteUnverifiedUsers', () => {
-    test("it returns an empty array if there are no unverified users with their verification tokens' expired", () => {
+    test("it returns an empty array if there are no unverified users with their verification tokens expired", () => {
         UserRepository.listUnverifiedAndExpired.mockReturnValue(null);
 
         try {
@@ -339,7 +339,7 @@ describe('#deleteUnverifiedUsers', () => {
             expect(err).toBeFalsy();
         }
     });
-    test("it returns an array with all deleted users if there are unverifieds users with their verification tokens' expired", () => {
+    test("it returns an array with all deleted users if there are unverifieds users with their verification tokens expired", () => {
         const unverifiedUsers = [
             {
                 id: 32,
