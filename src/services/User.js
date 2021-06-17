@@ -91,16 +91,15 @@ export default class User {
 
     deleteUnverifiedUsers() {
         const unverifiedUsers = this.UserRepository.listUnverifiedAndExpired();
-
-        if (!unverifiedUsers) return;
-
         const deletedUsersData = [];
 
-        for (let key in unverifiedUsers) {
-            const userId = unverifiedUsers[key].id;
-            const deletedUser = this.delete(userId);
+        if (unverifiedUsers) {
+            for (let key in unverifiedUsers) {
+                const userId = unverifiedUsers[key].id;
+                const deletedUser = this.delete(userId);
 
-            deletedUsersData.push(deletedUser);
+                deletedUsersData.push(deletedUser);
+            }
         }
 
         return deletedUsersData;
