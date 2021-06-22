@@ -2,5 +2,5 @@
     "execMap": {
         "js": "node -r sucrase/register"
     },
-    "ignore": ["myDataBase.json", "*.test.*"]
+    "ignore": ["myDataBase.json", "*.test.js"]
 }
