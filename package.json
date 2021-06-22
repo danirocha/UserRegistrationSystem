@@ -6,6 +6,8 @@
   "author": "Daniela Rocha (github.com/danirocha)",
   "license": "MIT",
   "scripts": {
+    "start": "npm build && node ./dist/App.js",
+    "build": "sucrase ./src -d ./dist --transforms imports",
     "dev": "nodemon src/App.js",
     "dev:debug": "nodemon --inspect src/App.js",
     "test": "jest --verbose",
