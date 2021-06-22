@@ -6,12 +6,12 @@
   "author": "Daniela Rocha (github.com/danirocha)",
   "license": "MIT",
   "scripts": {
-    "start": "npm build && node ./dist/App.js",
-    "build": "sucrase ./src -d ./dist --transforms imports",
+    "test": "jest --verbose",
+    "test:coverage": "jest --verbose --coverage",
     "dev": "nodemon src/App.js",
     "dev:debug": "nodemon --inspect src/App.js",
-    "test": "jest --verbose",
-    "test:coverage": "jest --verbose --coverage"
+    "build": "sucrase ./src -d ./dist --transforms imports",
+    "start": "node ./dist/App.js"
   },
   "dependencies": {
     "express": "^4.17.1",
